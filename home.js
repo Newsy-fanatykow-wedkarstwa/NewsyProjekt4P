@@ -1,9 +1,11 @@
-var myFetch = new Array();
-
-const assign = (arr) => {
-    myFetch = arr;
-    console.log(myFetch)
-} 
+const comments = (komentarze) => { //ilosc komentarzy
+        if(typeof komentarze === 'undefined') {
+            return 'komentarze: 0';
+        }
+        else{
+            return 'komentarze: ' + komentarze.length;
+        }
+}
 
 const theNewestPosts = () => { //najnowsze 30 postów
     fetch('https://hacker-news.firebaseio.com/v0/newstories.json?')
@@ -18,18 +20,17 @@ const theNewestPosts = () => { //najnowsze 30 postów
                         wynik += '</span></p><span class="separator">|</span> <p class="tytul_posta"><span id="tytul_posta">tytul: '+json2.title+'</span></p> <br>';
                         wynik += '<p class="autor_posta"><span id="autor_posta">autor: '+json2.by+'</span></p><span class="separator">|</span>';
                         wynik += '<p class="data_posta"><span id="data_posta">2h temu</span></p><span class="separator">|</span>';
-                        wynik += '<p class="ilosc_komment"><span id="ilosc_komment">14 komentarzy</span></p>';
+                        wynik += '<p class="ilosc_komment"><span id="ilosc_komment">'+comments(json2.kids)+'</span></p>';
                         document.getElementById('booder').innerHTML += wynik;
             })
         }
     }) 
-     
-        
-    let next = document.createElement('button');
-    document.body.appendChild(next);
-    next.textContent = 'Dalej';
-    next.onclick = () => {
-        console.log("Wyswietl");
-    };
+    // let next = document.createElement('button');
+    // document.body.appendChild(next);
+    // next.textContent = 'Dalej';
+    // next.onclick = () => {
+    //     console.log("Wyswietl");
+    // };
 }
-theNewestPosts();
+
+date();
