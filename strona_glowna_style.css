@@ -1,0 +1,109 @@
+*{
+    font-family: "Inter";
+}
+
+body{
+    background: #101010;
+    color: white;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.header {
+  background: #000;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.header a {
+  align-self: flex-end;
+}
+
+.header img{
+    margin-right: 4vw;
+}
+
+.in_put{
+    font-size: 2vh;
+}
+
+@media screen and (max-width: 650px) {
+    .menu {
+        width: 100%;
+        text-align: center; 
+        margin-bottom: 10px;
+    }
+}
+
+.menu,.in_put{
+    margin-top: auto; 
+    margin-bottom: 1.5vh; 
+    font-size: 3vh;
+    padding: 0.6vh;
+    padding: 0 3.5vw;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+  
+a:hover {
+    text-decoration: underline;
+}
+
+a:visited {
+    color: white;
+}
+
+.booder {
+    width: 90%; 
+    max-width: 1200px; 
+    margin: 0 auto;
+}
+
+.separator {
+    margin: 0 0.3vw; 
+}
+
+
+.post {
+    width: 100%;
+    margin: 10px 0 10px 0;
+    border-bottom: 1px solid #fff;
+    padding: 10px 0;
+}
+
+
+.ID_posta, .tytul_posta{
+    display: inline-block;
+}
+
+.autor_posta, .data_posta, .ilosc_komment {
+    display: inline-block;
+    color: gray;
+}
+
+
+
+footer {
+    background: #000;
+    color: white;
+    text-align: center;
+    padding: 0.6vw;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-item {
+    margin: 0 0.6vw; 
+    padding: 0.6vw 0.6vw;
+}
