@@ -26,6 +26,8 @@ const jedenDzień = 24 * 60 * 60 * 1000;
 
 const filtr_data = (json) => (outContent, amount) => {
     let a = 0;
+    console.log(json.lenght);
+    outContent.innerHTML='<center><div class="inputs">data: <input type="text"   onkeyup="genNewsy()" id="dateNewsy"> (format dd:mm:rrrr)<br><span id="error_format"></span></div></center>';
     json.forEach(element => {
         if (amount >= 1) {
             const {
@@ -43,14 +45,14 @@ const filtr_data = (json) => (outContent, amount) => {
             wynik += '<p class="autor_posta"><span id="autor_posta">autor: '+author+'</span></p><span class="separator">|</span>';
             wynik += '<p class="data_posta"><span id="data_posta">2h temu</span></p><span class="separator">|</span>';
             wynik += '<p class="ilosc_komment"><span id="ilosc_komment">'+num_comments+' komentarzy</span></p>';
-            document.getElementById('contentNewsy').innerHTML += wynik;
             // barkuje url i points
             outContent.innerHTML += wynik;
             amount--;
             a++;
         }
-
+        
     });
+    outContent.innerHTML+="<br><br><br><br>";
 }
 
 const api_filter = (StrDzień) => async (outContent, amount) => {
@@ -70,14 +72,14 @@ const api_filter = (StrDzień) => async (outContent, amount) => {
 function genNewsy() {
     const inputAmount = document.getElementById("amountNewsy");
     const inputDate = document.getElementById("dateNewsy");
-    const outContent = document.getElementById("contentNewsy");
+    const outContent = document.getElementById("booder");
     const outError = document.getElementById("error_format");
     const datePattern = /^([1-9]|[1-2]\d|3[0-1]):(0[1-9]|1[0-2]):\d{4}$/;
     const zeroPattern = /^0+$/;
 
     let amount = 5;
     if (inputAmount.value != "" && !zeroPattern.test(inputAmount.value)) amount = inputAmount.value;
-    console.log(inputDate.value)
+    // console.log(inputDate.value)
     if (datePattern.test(inputDate.value)) {
         outError.innerHTML = "";
         api_filter( inputDate.value )(outContent, amount    )
@@ -88,5 +90,5 @@ function genNewsy() {
 }
 
 window.onload = function () {
-document.getElementById("el").innerHTML = '<center><div class="inputs">data: <input type="text"   onkeyup="genNewsy()" id="dateNewsy"> (format dd:mm:rrrr)<br><span id="error_format"></span></div></center>';
+document.getElementById("booder").innerHTML = '<center><div class="inputs">data: <input type="text"   onkeyup="genNewsy()" id="dateNewsy"> (format dd:mm:rrrr)<br><span id="error_format"></span></div></center>';
 }
