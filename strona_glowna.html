@@ -12,22 +12,35 @@
 <body>
     <div class="header">
         <img src="obrazki/HACKING1_2.png" alt="img"><wbr>
-        <div class="menu"><a href="#">Najlepiej oceniane</a></div>
+        <div class="menu"><a href="strona_z_najlepszymi">Najlepiej oceniane</a></div>
         <div class="menu"><a href="#">Data</a></div>
         <div class="menu"><a href="#">Słowa klucz</a></div>
         <div class="menu"><a href="#">Statystyki</a></div><wbr>
-        <div class="in_put">Ile newsów: &nbsp; <input type="text" name="" id="amountNewsy"></div></a>
+        <div class="in_put">Ile newsów: &nbsp; <input type="text" name="" id="amountNewsy"><button id="amountNewsyAccept" onclick="howManyNews()">Wyślij</button></div></a>
     </div>
     <div class="booder" id="booder">
-<!-- // musi być identyko jak na figmie
+
         <div class="post">   
-            <p class="ID_posta">ID: <span id="wynik_ID">1</span></p><span class="separator">|</span>
-            <p class="tytul_posta"><span id="tytul_posta">tytul: Chinese Factories Dismantling Nvidia GeForce RTX 4090
-                    "Gaming" GPUs</span></p> <br>
-            <p class="autor_posta"><span id="autor_posta">autor: tosh</span></p><span class="separator">|</span>
-            <p class="data_posta"><span id="data_posta">2h temu</span></p><span class="separator">|</span>
-            <p class="ilosc_komment"><span id="ilosc_komment">14 komentarzy</span></p>
-        </div> -->
+            <p class="ID_posta">ID: <span id="wynik_ID">X</span></p>
+            <p class="tytul_posta"><span id="tytul_posta">tytul: X</span></p>
+
+            <label>
+                <input type="checkbox" name="" value="" display="none"/>
+                <svg class="my-image" height="15" width="15">
+                    <polygon points="7.5,0 15,15 0,15" />
+                </svg>
+            </label>
+            <p class="link_posta"><span id="link_posta"><a href="https://youtu.be/3t9rAb6ClLY?si=6SvdnjaRhKg4NFV1">(https://youtu.be/3t9rAb6ClLY?si=6SvdnjaRhKg4NFV1)</a></span></p>
+            <br>
+            
+            <p class="autor_posta"><span id="autor_posta">autor: X</span></p>
+            <p class="hide"><span id="autor_posta">hide</span></p>
+            <p class="data_posta"><span id="data_posta">X temu</span></p>
+            <p class="ilosc_komment"><span id="ilosc_komment">X komentarzy</span></p>
+        </div>
+        <button id="showMore" onclick="showMore()">Dalej</button>
+
+        <hr><br> <hr>
 
     </div>
     <footer>

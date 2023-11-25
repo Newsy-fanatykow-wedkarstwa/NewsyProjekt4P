@@ -75,16 +75,28 @@ a:visited {
 }
 
 
-.ID_posta, .tytul_posta{
+.ID_posta, .tytul_posta, .my-image, .link_posta{
     display: inline-block;
+    padding-right: 2vw;
 }
 
-.autor_posta, .data_posta, .ilosc_komment {
+.autor_posta, .data_posta, .ilosc_komment, .hide{
     display: inline-block;
+    color: gray;
+    padding-right: 2vw;
+}
+
+.link_posta {
     color: gray;
 }
 
+.my-image {
+    fill:white;
+}
 
+input[type="checkbox"]:checked + .my-image {
+    fill:green;
+}
 
 footer {
     background: #000;
