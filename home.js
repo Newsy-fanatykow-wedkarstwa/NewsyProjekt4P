@@ -33,4 +33,4 @@ const theNewestPosts = () => { //najnowsze 30 postów
     // };
 }
 
-date();
+theNewestPosts();
