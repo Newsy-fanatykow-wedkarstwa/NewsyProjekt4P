@@ -1,3 +1,7 @@
+var startArticle = 0;
+var endArticle = 0;
+var number = 0;
+
 const comments = (komentarze) => { //ilosc komentarzy
         if(typeof komentarze === 'undefined') {
             return 'komentarze: 0';
@@ -7,11 +11,12 @@ const comments = (komentarze) => { //ilosc komentarzy
         }
 }
 
-const theNewestPosts = () => { //najnowsze 30 postów
+const theNewestPosts = (start,howMany) => { //najnowsze 30 postów
+    console.log(startArticle," ",endArticle);
     fetch('https://hacker-news.firebaseio.com/v0/newstories.json?')
         .then(response => response.json())
         .then (async json => {
-            for(var a=0; a<30; a++) {
+            for(var a=start; a<howMany; a++) {
                 let x= json[a];
                 await fetch('https://hacker-news.firebaseio.com/v0/item/'+x+'.json?print=pretty')
                     .then(response2 => response2.json())
@@ -25,12 +30,24 @@ const theNewestPosts = () => { //najnowsze 30 postów
             })
         }
     }) 
-    // let next = document.createElement('button');
-    // document.body.appendChild(next);
-    // next.textContent = 'Dalej';
-    // next.onclick = () => {
-    //     console.log("Wyswietl");
-    // };
 }
 
-date();
+const showMore = () => { //pokaz więcej
+    document.getElementById("booder").innerText = "";
+    startArticle=endArticle;
+    endArticle += number;
+    theNewestPosts(startArticle, endArticle);
+}
+
+const howManyNews = () => { //ile newsow ma sie pokazywac
+    let amount = document.getElementById('amountNewsy').value;
+    amount = parseInt(amount);
+    number = amount;
+    endArticle = amount;
+    startArticle = 0;
+    document.getElementById("booder").innerText = "";
+    theNewestPosts(startArticle, endArticle);
+}
+
+theNewestPosts(0,30);
+
