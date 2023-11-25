@@ -50,4 +50,3 @@ const howManyNews = () => { //ile newsow ma sie pokazywac
 }
 
 theNewestPosts(0,30);
-
