@@ -1,6 +1,6 @@
 // Newsy powinny być podzielone na dzisiejsze/dawniejsze (tam powinna być możliwość podania daty)
 
-const na_unix_time = (dataString) => // zwraca int // Zamiana na Unix time (czas w milisekundach) 
+const  na_unix_time = (dataString) => // zwraca int // Zamiana na Unix time (czas w milisekundach) 
     new Date(
         parseInt(dataString.split(':')[2]),
         parseInt(dataString.split(':')[1]) - 1,
@@ -13,6 +13,12 @@ const na_date_format = (unixTime) => // zwraca str // Zamiana na datę "dd:mm:rr
     ":" + ("0" + (new Date(unixTime).getMonth() + 1)).slice(-2) +
     ":" + new Date(unixTime).getFullYear(); // jeden dzień: (24 * 60 * 60 * 1000)
 
+const na_czas_format = (róznicaCzasUnix) => // zwraca str // Zamiana na datę "mm:hh" 
+    // zwraca poprawną wartość jako "mm:hh" jeżeli róznica jest bierzący_czas - czas_posta 
+    // i ta rużnica jest mniejsza niż jeden dzień około 86400sekund
+    ("0" + (Math.floor(róznicaCzasUnix / (1000 * 60)) % 60)).slice(-2) 
+    + ":" +("0" + Math.floor(Math.floor(róznicaCzasUnix / (1000 * 60)) / 60)).slice(-2);
+    
 // console.log( // przedział jednego dnia
 //     na_unix_time("23:11:2023"),      /// zmienna a
 //     na_unix_time("24:11:2023"),      /// zmienna b
@@ -22,6 +28,16 @@ const na_date_format = (unixTime) => // zwraca str // Zamiana na datę "dd:mm:rr
 //
 const jedenDzień = 24 * 60 * 60 * 1000;
 // console.log( na_date_format( Date.now()+jedenDzień )  );
+        // let posta_unixTime = 1700858438;
+        // console.log(na_unix_time("25:11:2023"), na_date_format(Date.now()), Date.now());
+        // console.log(na_czas_format(   ( Date.now()  - posta_unixTime *1000)    ));
+
+
+//
+// export { na_unix_time, na_date_format, na_czas_format }; nie działa export -_- trzeba by było globalnie -_-
+//
+
+
 
 
 const filtr_data = (json) => (outContent, amount) => {
