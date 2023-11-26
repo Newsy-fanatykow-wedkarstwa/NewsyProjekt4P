@@ -28,7 +28,14 @@ const theNewestPosts = (start,howMany) => { //najnowsze posty
                         wynik += '<p class="autor_posta"><span id="autor_posta">autor: '+json2.by+'</span></p><span class="separator">|</span>';
                         wynik += '<p class="data_posta"><span id="data_posta">2h temu</span></p><span class="separator">|</span>';
                         wynik += '<p class="ilosc_komment"><span id="ilosc_komment">'+comments(json2.kids)+'</span></p>';
-                        wynik += '<p class="link_posta"><span id="link_posta"><a href="'+json2.url+'">'+json2.url+'</a></span></p>';
+                        wynik += '<p class="link_posta"><span id="link_posta">';
+                        if(typeof json2.url == 'undefined') {
+                           wynik += '<a href="#">brak</a>';
+                        }
+                        else {
+                            wynik += '<a href="'+json2.url+'">'+json2.url+'</a>';
+                        }
+                        wynik += '</span></p>';
                         document.getElementById('booder').innerHTML += wynik;
             })
         }
@@ -36,9 +43,7 @@ const theNewestPosts = (start,howMany) => { //najnowsze posty
 }
 
 const hide = (divID) => { //ukrywa div'a
-    console.log(divID);
     var div = document.getElementById('div'+divID);
-    console.log(div);
     div.style.display = 'none';
 }
 
