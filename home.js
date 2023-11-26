@@ -11,11 +11,7 @@ const comments = (komentarze) => { //ilosc komentarzy
         }
 }
 
-const showTheArticles = () => {
-
-}
-
-const theNewestPosts = (start,howMany) => { //najnowsze 30 postów
+const theNewestPosts = (start,howMany) => { //najnowsze posty
     fetch('https://hacker-news.firebaseio.com/v0/newstories.json?')
         .then(response => response.json())
         .then (async json => {
@@ -24,15 +20,26 @@ const theNewestPosts = (start,howMany) => { //najnowsze 30 postów
                 await fetch('https://hacker-news.firebaseio.com/v0/item/'+x+'.json?print=pretty')
                     .then(response2 => response2.json())
                     .then(json2 => {
-                        let wynik = '<div class="post"><p class="ID_posta">ID: <span id="wynik_ID">'+(a+1)+'</span>';
-                        wynik += '</span></p><span class="separator">|</span> <p class="tytul_posta"><span id="tytul_posta">tytul: '+json2.title+'</span></p> <br>';
+                        let url='https://hacker-news.firebaseio.com/v0/item/'+x+'.json?print=pretty';
+                        let wynik = '<div class="post" id="div'+(a+1)+'"><p class="ID_posta">ID: <span id="wynik_ID">'+(a+1)+'</span>';
+                        wynik += '</span></p><span class="separator">|</span> <p class="tytul_posta">';
+                        wynik += '<span id="tytul_posta">tytul: '+json2.title+'</span></p> <br>';
+                        wynik += '<button id="hide" onclick="hide('+(a+1)+')">hide</button>&emsp;';
                         wynik += '<p class="autor_posta"><span id="autor_posta">autor: '+json2.by+'</span></p><span class="separator">|</span>';
                         wynik += '<p class="data_posta"><span id="data_posta">2h temu</span></p><span class="separator">|</span>';
                         wynik += '<p class="ilosc_komment"><span id="ilosc_komment">'+comments(json2.kids)+'</span></p>';
+                        wynik += '<p class="link_posta"><span id="link_posta"><a href="'+json2.url+'">'+json2.url+'</a></span></p>';
                         document.getElementById('booder').innerHTML += wynik;
             })
         }
     }) 
+}
+
+const hide = (divID) => { //ukrywa div'a
+    console.log(divID);
+    var div = document.getElementById('div'+divID);
+    console.log(div);
+    div.style.display = 'none';
 }
 
 const showMore = () => { //pokaz więcej
