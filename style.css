@@ -60,6 +60,14 @@ a:visited {
     width: 90%; 
     max-width: 1200px; 
     margin: 0 auto;
+    margin-bottom: 30px;
+}
+
+.booter {
+    width: 90%; 
+    max-width: 1200px; 
+    margin: 0 auto;
+    margin-bottom: 150px;
 }
 
 .separator {
@@ -88,6 +96,10 @@ a:visited {
 
 .link_posta {
     color: gray;
+}
+
+.showMore{
+    margin-top: 400px;
 }
 
 .my-image {

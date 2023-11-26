@@ -1,5 +1,3 @@
-var myFetch = new Array();
-
 const theBestPosts = () => {
     fetch('https://hacker-news.firebaseio.com/v0/beststories.json?')
         .then(response => response.json())
@@ -15,11 +13,11 @@ const theBestPosts = () => {
                         // wyswietlanie tytulu
                         wynik += '</span></p><span class="separator">|</span> <p class="tytul_posta"><span id="tytul_posta">tytul: '+json2.title+'</span></p> <br>';
                         
-                        // wyswietlanie autora
-                        wynik += '<p class="autor_posta"><span id="autor_posta">autor: '+json2.by+'</span></p><span class="separator">|</span>';
-
                         // wyswietlanie wyniku
                         wynik += '<p class="autor_posta"><span id="autor_posta">wynik: '+json2.score+'</span></p><span class="separator">|</span>';
+
+                        // wyswietlanie autora
+                        wynik += '<p class="autor_posta"><span id="autor_posta">autor: '+json2.by+'</span></p><span class="separator">|</span>';
                         
                         // wyswietlanie daty
                         // wynik += '<p class="data_posta"><span id="data_posta">2h temu</span></p><span class="separator">|</span>';
