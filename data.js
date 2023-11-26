@@ -1,6 +1,6 @@
 // Newsy powinny być podzielone na dzisiejsze/dawniejsze (tam powinna być możliwość podania daty)
 
-const na_unix_time = (dataString) => // zwraca int // Zamiana na Unix time (czas w milisekundach) 
+const  na_unix_time = (dataString) => // zwraca int // Zamiana na Unix time (czas w milisekundach) 
     new Date(
         parseInt(dataString.split(':')[2]),
         parseInt(dataString.split(':')[1]) - 1,
@@ -13,6 +13,12 @@ const na_date_format = (unixTime) => // zwraca str // Zamiana na datę "dd:mm:rr
     ":" + ("0" + (new Date(unixTime).getMonth() + 1)).slice(-2) +
     ":" + new Date(unixTime).getFullYear(); // jeden dzień: (24 * 60 * 60 * 1000)
 
+const na_czas_format = (róznicaCzasUnix) => // zwraca str // Zamiana na datę "mm:hh" 
+    // zwraca poprawną wartość jako "mm:hh" jeżeli róznica jest bierzący_czas - czas_posta 
+    // i ta rużnica jest mniejsza niż jeden dzień około 86400sekund
+    ("0" + (Math.floor(róznicaCzasUnix / (1000 * 60)) % 60)).slice(-2) 
+    + ":" +("0" + Math.floor(Math.floor(róznicaCzasUnix / (1000 * 60)) / 60)).slice(-2);
+    
 // console.log( // przedział jednego dnia
 //     na_unix_time("23:11:2023"),      /// zmienna a
 //     na_unix_time("24:11:2023"),      /// zmienna b
@@ -22,10 +28,22 @@ const na_date_format = (unixTime) => // zwraca str // Zamiana na datę "dd:mm:rr
 //
 const jedenDzień = 24 * 60 * 60 * 1000;
 // console.log( na_date_format( Date.now()+jedenDzień )  );
+        // let posta_unixTime = 1700858438;
+        // console.log(na_unix_time("25:11:2023"), na_date_format(Date.now()), Date.now());
+        // console.log(na_czas_format(   ( Date.now()  - posta_unixTime *1000)    ));
+
+
+//
+// export { na_unix_time, na_date_format, na_czas_format }; nie działa export -_- trzeba by było globalnie -_-
+//
+
+
 
 
 const filtr_data = (json) => (outContent, amount) => {
     let a = 0;
+    console.log(json.lenght);
+    outContent.innerHTML='<center><div class="inputs">data: <input type="text"   onkeyup="genNewsy()" id="dateNewsy"> (format dd:mm:rrrr)<br><span id="error_format"></span></div></center>';
     json.forEach(element => {
         if (amount >= 1) {
             const {
@@ -43,14 +61,14 @@ const filtr_data = (json) => (outContent, amount) => {
             wynik += '<p class="autor_posta"><span id="autor_posta">autor: '+author+'</span></p><span class="separator">|</span>';
             wynik += '<p class="data_posta"><span id="data_posta">2h temu</span></p><span class="separator">|</span>';
             wynik += '<p class="ilosc_komment"><span id="ilosc_komment">'+num_comments+' komentarzy</span></p>';
-            document.getElementById('contentNewsy').innerHTML += wynik;
             // barkuje url i points
             outContent.innerHTML += wynik;
             amount--;
             a++;
         }
-
+        
     });
+    outContent.innerHTML+="<br><br><br><br>";
 }
 
 const api_filter = (StrDzień) => async (outContent, amount) => {
@@ -70,14 +88,14 @@ const api_filter = (StrDzień) => async (outContent, amount) => {
 function genNewsy() {
     const inputAmount = document.getElementById("amountNewsy");
     const inputDate = document.getElementById("dateNewsy");
-    const outContent = document.getElementById("contentNewsy");
+    const outContent = document.getElementById("booder");
     const outError = document.getElementById("error_format");
     const datePattern = /^([1-9]|[1-2]\d|3[0-1]):(0[1-9]|1[0-2]):\d{4}$/;
     const zeroPattern = /^0+$/;
 
     let amount = 5;
     if (inputAmount.value != "" && !zeroPattern.test(inputAmount.value)) amount = inputAmount.value;
-    console.log(inputDate.value)
+    // console.log(inputDate.value)
     if (datePattern.test(inputDate.value)) {
         outError.innerHTML = "";
         api_filter( inputDate.value )(outContent, amount    )
@@ -88,5 +106,5 @@ function genNewsy() {
 }
 
 window.onload = function () {
-document.getElementById("el").innerHTML = '<center><div class="inputs">data: <input type="text"   onkeyup="genNewsy()" id="dateNewsy"> (format dd:mm:rrrr)<br><span id="error_format"></span></div></center>';
+document.getElementById("booder").innerHTML = '<center><div class="inputs">data: <input type="text"   onkeyup="genNewsy()" id="dateNewsy"> (format dd:mm:rrrr)<br><span id="error_format"></span></div></center>';
 }
