@@ -1,6 +1,6 @@
 var startArticle = 0;
-var endArticle = 0;
-var number = 0;
+var endArticle = 3;
+var number = endArticle;
 
 const comments = (komentarze) => { //ilosc komentarzy
         if(typeof komentarze === 'undefined') {
@@ -11,8 +11,11 @@ const comments = (komentarze) => { //ilosc komentarzy
         }
 }
 
+const showTheArticles = () => {
+
+}
+
 const theNewestPosts = (start,howMany) => { //najnowsze 30 postów
-    console.log(startArticle," ",endArticle);
     fetch('https://hacker-news.firebaseio.com/v0/newstories.json?')
         .then(response => response.json())
         .then (async json => {
@@ -34,13 +37,13 @@ const theNewestPosts = (start,howMany) => { //najnowsze 30 postów
 
 const showMore = () => { //pokaz więcej
     document.getElementById("booder").innerText = "";
-    startArticle=endArticle;
-    endArticle += number;
+    startArticle=endArticle; 
+    endArticle += number; 
     theNewestPosts(startArticle, endArticle);
 }
 
 const howManyNews = () => { //ile newsow ma sie pokazywac
-    let amount = document.getElementById('amountNewsy').value;
+    amount = document.getElementById('amountNewsy').value;
     amount = parseInt(amount);
     number = amount;
     endArticle = amount;
@@ -49,4 +52,4 @@ const howManyNews = () => { //ile newsow ma sie pokazywac
     theNewestPosts(startArticle, endArticle);
 }
 
-theNewestPosts(0,30);
+theNewestPosts(startArticle, endArticle);
