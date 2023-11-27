@@ -2,8 +2,6 @@ var startArticle = 0;
 var endArticle = 3;
 var number = endArticle;
 var change = 0;
-var points = 0;
-var points1 = 0;
 
 const comments = (komentarze) => { //ilosc komentarzy
         if(typeof komentarze === 'undefined') {
@@ -41,22 +39,36 @@ const theNewestPosts = (start,howMany) => { //najnowsze posty
                             }
                         wynik += '</span></p>';
                         document.getElementById('booder').innerHTML += wynik;
-                        statisticHowMany(points, json2.score, 'statystyka_1');
-                        statisticHowMany(points1, comments(json2.kids), 'statystyka_2');
+                        statisticHowMany(json2.score, 'statystyka_1');
+                        statisticHowMany(comments(json2.kids), 'statystyka_2');
                         localChanges('statystyka_3', 'img.triangle1');
                         localChanges('statystyka_4', 'div.hidden');
-                        // statisticHowMany(comments(json2.kids), 'statystyka_2');
+                        numberInString(json2.title, 'statystyka_5');
             })
         }
     }) 
 }
 
-const statisticHowMany = (numm, score, statisticID) => { //zliczanie do statystyk
+const numberInString = (title, statisticID) => { //czy string zawiera cyfre
+    let num = /\d/.test(title); 
+    if(num){
+        statisticHowMany(1, statisticID);
+    }
+}
+
+const statisticHowMany = (score, statisticID) => { //zliczanie do statystyk
+    var numm=0;
     numm += score;
     const element = document.getElementById(statisticID);
     const currentValue = parseInt(element.innerHTML) || 0; // Jeśli parseInt zwraca NaN, zwróć 0
     element.innerHTML = currentValue + numm;
     return currentValue + numm;
+}
+
+const localChanges = (statisticID, selector) => { //ile polubien i schowanych postow
+    const sth = document.querySelectorAll(selector);
+    const count = sth.length;
+    document.getElementById(statisticID).innerHTML = parseInt(count);
 }
 
 const resetStatistics = () => { //resetowanie statystyk
@@ -65,6 +77,7 @@ const resetStatistics = () => { //resetowanie statystyk
     document.getElementById('statystyka_3').innerHTML = "";
     document.getElementById('statystyka_4').innerHTML = "";
     document.getElementById('statystyka_5').innerHTML = "";
+    points2=0;
 }
 
 const imageChange = (number) => { //polubienia
@@ -80,12 +93,6 @@ const imageChange = (number) => { //polubienia
         image.className = "triangle0";
         localChanges('statystyka_3', 'img.triangle1');
     }
-}
-
-const localChanges = (statisticID, selector) => { //ile polubien i schowanych postow
-    const sth = document.querySelectorAll(selector);
-    const count = sth.length;
-    document.getElementById(statisticID).innerHTML = parseInt(count);
 }
 
 const hide = (divID) => { //ukrywa div'a
