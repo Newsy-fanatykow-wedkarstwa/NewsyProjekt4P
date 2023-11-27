@@ -7,7 +7,7 @@ const comments = (komentarze) => { //ilosc komentarzy
         if(typeof komentarze === 'undefined') {
             return parseInt(0);
         }
-        else{
+        else {
             return parseInt(komentarze.length);
         }
 }
@@ -25,19 +25,19 @@ const theNewestPosts = (start,howMany) => { //najnowsze posty
                         wynik += '</span></p><span class="separator">|</span> <p class="tytul_posta">';
                         wynik += '<span id="tytul_posta">tytul: '+json2.title+'</span></p>';
                         wynik += '<img class="triangle0" id="triangle'+(a+1)+'" src="obrazki/white_triangle.png" onclick="imageChange('+(a+1)+')" style="width: 15px;"><br/>';
-                        wynik += '<button id="hide" onclick="hide('+(a+1)+')">hide</button><br/>';
+                        wynik += '<button id="hide" class="btn btn-secondary" onclick="hide('+(a+1)+')">hide</button><br/>';
                         wynik += '<p class="autor_posta"><span id="autor_posta">autor: '+json2.by+'</span></p><span class="separator">|</span>';
                         wynik += '<br><p class="wynik_posta"><span id="wynik_posta">wynik: '+json2.score+'</span></p><span class="separator">|</span>';
                         wynik += '<p class="data_posta"><span id="data_posta">2h temu</span></p><span class="separator">|</span>';
                         wynik += '<p class="ilosc_komment"><span id="ilosc_komment">komantarzy: '+comments(json2.kids)+'</span></p>';
-                        wynik += '<p class="link_posta"><span id="link_posta">';
+                        wynik += '<p class="link_posta"><span id="link_posta">(';
                             if(typeof json2.url == 'undefined') {
                             wynik += '<a href="#">brak</a>';
                             }
                             else {
                                 wynik += '<a href="'+json2.url+'">'+json2.url+'</a>';
                             }
-                        wynik += '</span></p>';
+                        wynik += ')</span></p>';
                         document.getElementById('booder').innerHTML += wynik;
                         statisticHowMany(json2.score, 'statystyka_1');
                         statisticHowMany(comments(json2.kids), 'statystyka_2');
@@ -46,6 +46,7 @@ const theNewestPosts = (start,howMany) => { //najnowsze posty
                         numberInString(json2.title, 'statystyka_5');
             })
         }
+        document.getElementById('statistics').style.display = 'block';
     }) 
 }
 
@@ -103,6 +104,7 @@ const hide = (divID) => { //ukrywa div'a
 }
 
 const showMore = () => { //pokaz więcej
+    document.getElementById('statistics').style.display = 'none';
     resetStatistics();
     document.getElementById("booder").innerText = "";
     startArticle=endArticle; 
@@ -112,6 +114,8 @@ const showMore = () => { //pokaz więcej
 }
 
 const howManyNews = () => { //ile newsow ma sie pokazywac
+    document.getElementById('statistics').style.display = 'none';
+    resetStatistics();
     amount = document.getElementById('amountNewsy').value;
     amount = parseInt(amount);
     number = amount;
@@ -121,4 +125,5 @@ const howManyNews = () => { //ile newsow ma sie pokazywac
     theNewestPosts(startArticle, endArticle);
 }
 
-theNewestPosts(startArticle, endArticle);
+theNewestPosts(0,3);
+// theNewestPosts(startArticle, endArticle);
