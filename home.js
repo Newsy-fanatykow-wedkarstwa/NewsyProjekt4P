@@ -1,6 +1,7 @@
 var startArticle = 0;
 var endArticle = 3;
 var number = endArticle;
+var change = 0;
 
 const comments = (komentarze) => { //ilosc komentarzy
         if(typeof komentarze === 'undefined') {
@@ -23,23 +24,37 @@ const theNewestPosts = (start,howMany) => { //najnowsze posty
                         let url='https://hacker-news.firebaseio.com/v0/item/'+x+'.json?print=pretty';
                         let wynik = '<div class="post" id="div'+(a+1)+'"><p class="ID_posta">ID: <span id="wynik_ID">'+(a+1)+'</span>';
                         wynik += '</span></p><span class="separator">|</span> <p class="tytul_posta">';
-                        wynik += '<span id="tytul_posta">tytul: '+json2.title+'</span></p> <br>';
+                        wynik += '<span id="tytul_posta">tytul: '+json2.title+'</span></p>';
+                        wynik += '<img id="triangle'+(a+1)+'" src="obrazki/white_triangle.png" onclick="imageChange('+(a+1)+')" style="width: 15px;"><br/>';
                         wynik += '<button id="hide" onclick="hide('+(a+1)+')">hide</button>&emsp;';
                         wynik += '<p class="autor_posta"><span id="autor_posta">autor: '+json2.by+'</span></p><span class="separator">|</span>';
                         wynik += '<p class="data_posta"><span id="data_posta">2h temu</span></p><span class="separator">|</span>';
                         wynik += '<p class="ilosc_komment"><span id="ilosc_komment">'+comments(json2.kids)+'</span></p>';
                         wynik += '<p class="link_posta"><span id="link_posta">';
-                        if(typeof json2.url == 'undefined') {
-                           wynik += '<a href="#">brak</a>';
-                        }
-                        else {
-                            wynik += '<a href="'+json2.url+'">'+json2.url+'</a>';
-                        }
+                            if(typeof json2.url == 'undefined') {
+                            wynik += '<a href="#">brak</a>';
+                            }
+                            else {
+                                wynik += '<a href="'+json2.url+'">'+json2.url+'</a>';
+                            }
                         wynik += '</span></p>';
                         document.getElementById('booder').innerHTML += wynik;
             })
         }
     }) 
+}
+
+const imageChange = (number) => {
+    var image = document.getElementById('triangle'+number);
+    if(change == 0) {
+        image.src = "obrazki/green_triangle.png";
+        change++;
+        return;
+    }
+    else {
+        change--;
+        image.src = "obrazki/white_triangle.png";
+    }
 }
 
 const hide = (divID) => { //ukrywa div'a
