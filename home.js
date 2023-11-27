@@ -41,14 +41,17 @@ const theNewestPosts = (start,howMany) => { //najnowsze posty
                             }
                         wynik += '</span></p>';
                         document.getElementById('booder').innerHTML += wynik;
-                        points1 = statisticHowMany(points, json2.score, 'statystyka_1');
+                        statisticHowMany(points, json2.score, 'statystyka_1');
+                        statisticHowMany(points1, comments(json2.kids), 'statystyka_2');
+                        localChanges('statystyka_3', 'img.triangle1');
+                        localChanges('statystyka_4', 'div.hidden');
                         // statisticHowMany(comments(json2.kids), 'statystyka_2');
             })
         }
     }) 
 }
 
-const statisticHowMany = (numm, score, statisticID) => {
+const statisticHowMany = (numm, score, statisticID) => { //zliczanie do statystyk
     numm += score;
     const element = document.getElementById(statisticID);
     const currentValue = parseInt(element.innerHTML) || 0; // Jeśli parseInt zwraca NaN, zwróć 0
@@ -56,7 +59,7 @@ const statisticHowMany = (numm, score, statisticID) => {
     return currentValue + numm;
 }
 
-const resetStatistics = () => {
+const resetStatistics = () => { //resetowanie statystyk
     document.getElementById('statystyka_1').innerHTML = "";
     document.getElementById('statystyka_2').innerHTML = "";
     document.getElementById('statystyka_3').innerHTML = "";
@@ -64,31 +67,32 @@ const resetStatistics = () => {
     document.getElementById('statystyka_5').innerHTML = "";
 }
 
-const imageChange = (number) => {
+const imageChange = (number) => { //polubienia
     var image = document.getElementById('triangle'+number);
     if(image.className == 'triangle0') {
         image.src = "obrazki/green_triangle.png";
         image.className = "triangle1";
-        articleLikes();
+        localChanges('statystyka_3', 'img.triangle1');
         return;
     }
     else {
         image.src = "obrazki/white_triangle.png";
         image.className = "triangle0";
-        articleLikes();
+        localChanges('statystyka_3', 'img.triangle1');
     }
 }
 
-const articleLikes = () => {
-    const likes = document.querySelectorAll('img.triangle1');
-    const howManyLikes = likes.length;
-    document.getElementById('statystyka_3').innerHTML = parseInt(howManyLikes);
+const localChanges = (statisticID, selector) => { //ile polubien i schowanych postow
+    const sth = document.querySelectorAll(selector);
+    const count = sth.length;
+    document.getElementById(statisticID).innerHTML = parseInt(count);
 }
-
 
 const hide = (divID) => { //ukrywa div'a
     var div = document.getElementById('div'+divID);
+    div.className = 'hidden';
     div.style.display = 'none';
+    localChanges('statystyka_4', 'div.hidden');
 }
 
 const showMore = () => { //pokaz więcej
