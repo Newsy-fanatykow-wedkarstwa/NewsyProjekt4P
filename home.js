@@ -2,6 +2,7 @@ var startArticle = 0;
 var endArticle = 3;
 var number = endArticle;
 var change = 0;
+var howManyLikes = 0;
 
 const comments = (komentarze) => { //ilosc komentarzy
         if(typeof komentarze === 'undefined') {
@@ -21,11 +22,10 @@ const theNewestPosts = (start,howMany) => { //najnowsze posty
                 await fetch('https://hacker-news.firebaseio.com/v0/item/'+x+'.json?print=pretty')
                     .then(response2 => response2.json())
                     .then(json2 => {
-                        let url='https://hacker-news.firebaseio.com/v0/item/'+x+'.json?print=pretty';
                         let wynik = '<div class="post" id="div'+(a+1)+'"><p class="ID_posta">ID: <span id="wynik_ID">'+(a+1)+'</span>';
                         wynik += '</span></p><span class="separator">|</span> <p class="tytul_posta">';
                         wynik += '<span id="tytul_posta">tytul: '+json2.title+'</span></p>';
-                        wynik += '<img id="triangle'+(a+1)+'" src="obrazki/white_triangle.png" onclick="imageChange('+(a+1)+')" style="width: 15px;"><br/>';
+                        wynik += '<img class="triangle0" id="triangle'+(a+1)+'" src="obrazki/white_triangle.png" onclick="imageChange('+(a+1)+')" style="width: 15px;"><br/>';
                         wynik += '<button id="hide" onclick="hide('+(a+1)+')">hide</button>&emsp;';
                         wynik += '<p class="autor_posta"><span id="autor_posta">autor: '+json2.by+'</span></p><span class="separator">|</span>';
                         wynik += '<p class="data_posta"><span id="data_posta">2h temu</span></p><span class="separator">|</span>';
@@ -46,16 +46,25 @@ const theNewestPosts = (start,howMany) => { //najnowsze posty
 
 const imageChange = (number) => {
     var image = document.getElementById('triangle'+number);
-    if(change == 0) {
+    if(image.className == 'triangle0') {
         image.src = "obrazki/green_triangle.png";
-        change++;
+        image.className = "triangle1";
+        articleLikes();
         return;
     }
     else {
-        change--;
         image.src = "obrazki/white_triangle.png";
+        image.className = "triangle0";
+        articleLikes();
     }
 }
+
+const articleLikes = () => {
+    const likes = document.querySelectorAll('img.triangle1');
+    const howManyLikes = likes.length;
+    document.getElementById('statystyka_3').innerHTML = parseInt(howManyLikes);
+}
+
 
 const hide = (divID) => { //ukrywa div'a
     var div = document.getElementById('div'+divID);
@@ -66,6 +75,7 @@ const showMore = () => { //pokaz więcej
     document.getElementById("booder").innerText = "";
     startArticle=endArticle; 
     endArticle += number; 
+    document.getElementById('statystyka_3').innerHTML = "";
     theNewestPosts(startArticle, endArticle);
 }
 

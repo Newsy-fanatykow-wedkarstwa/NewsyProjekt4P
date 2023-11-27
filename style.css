@@ -130,3 +130,7 @@ footer {
     margin: 0 0.6vw; 
     padding: 0.6vw 0.6vw;
 }
+
+.statystyka_1, .statystyka_2, .statystyka_3, .statystyka_4.statystyka_5, .statystyka_6{
+    color: gray;
+} 
