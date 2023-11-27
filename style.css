@@ -134,3 +134,17 @@ footer {
 .statystyka_1, .statystyka_2, .statystyka_3, .statystyka_4.statystyka_5, .statystyka_6{
     color: gray;
 } 
+
+#amountNewsyAccept{
+    margin-left: 10px;
+}
+
+#statistics  {
+    display: none;
+}
+
+.fanatycy{
+    position: sticky;
+    bottom: 0;
+    margin-top: 300px;
+}
