@@ -78,11 +78,11 @@ const hide = (divID) => { //ukrywa div'a
 }
 /// i tyle 
 
-
+const input_on_html = '<center><div class="inputs">data: <input type="text"   onkeyup="genNewsy()" id="dateNewsy"> (format dd:mm:rrrr)<br><span id="error_format"></span></div></center>';
 const filtr_data = (json) => (outContent, amount) => {
     let a = 0;
     console.log(json.lenght);
-    outContent.innerHTML='<center><div class="inputs">data: <input type="text"   onkeyup="genNewsy()" id="dateNewsy"> (format dd:mm:rrrr)<br><span id="error_format"></span></div></center>';
+    outContent.innerHTML=input_on_html;
     json.forEach(element => {
         if (amount >= 1) {
             const {
@@ -167,5 +167,5 @@ function genNewsy() {
 }
 
 window.onload = function () {
-document.getElementById("booder").innerHTML = '<center><div class="inputs">data: <input type="text"   onkeyup="genNewsy()" id="dateNewsy"> (format dd:mm:rrrr)<br><span id="error_format"></span></div></center>';
+document.getElementById("booder").innerHTML = input_on_html;
 }
