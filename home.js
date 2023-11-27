@@ -3,6 +3,7 @@ var endArticle = 3;
 var number = endArticle;
 var change = 0;
 var howManyLikes = 0;
+var howManyPoints = 0;
 
 const comments = (komentarze) => { //ilosc komentarzy
         if(typeof komentarze === 'undefined') {
@@ -26,8 +27,9 @@ const theNewestPosts = (start,howMany) => { //najnowsze posty
                         wynik += '</span></p><span class="separator">|</span> <p class="tytul_posta">';
                         wynik += '<span id="tytul_posta">tytul: '+json2.title+'</span></p>';
                         wynik += '<img class="triangle0" id="triangle'+(a+1)+'" src="obrazki/white_triangle.png" onclick="imageChange('+(a+1)+')" style="width: 15px;"><br/>';
-                        wynik += '<button id="hide" onclick="hide('+(a+1)+')">hide</button>&emsp;';
+                        wynik += '<button id="hide" onclick="hide('+(a+1)+')">hide</button><br/>';
                         wynik += '<p class="autor_posta"><span id="autor_posta">autor: '+json2.by+'</span></p><span class="separator">|</span>';
+                        wynik += '<br><p class="wynik_posta"><span id="wynik_posta">wynik: '+json2.score+'</span></p><span class="separator">|</span>';
                         wynik += '<p class="data_posta"><span id="data_posta">2h temu</span></p><span class="separator">|</span>';
                         wynik += '<p class="ilosc_komment"><span id="ilosc_komment">'+comments(json2.kids)+'</span></p>';
                         wynik += '<p class="link_posta"><span id="link_posta">';
@@ -39,9 +41,15 @@ const theNewestPosts = (start,howMany) => { //najnowsze posty
                             }
                         wynik += '</span></p>';
                         document.getElementById('booder').innerHTML += wynik;
+                        articlesPoints(json2.score);
             })
         }
     }) 
+}
+
+const articlesPoints = (points) => { //ilosc punktow
+    howManyLikes += points;
+    document.getElementById('statystyka_1').innerHTML = parseInt(howManyLikes);
 }
 
 const imageChange = (number) => {
