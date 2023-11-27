@@ -2,15 +2,15 @@ var startArticle = 0;
 var endArticle = 3;
 var number = endArticle;
 var change = 0;
-var howManyLikes = 0;
-var howManyPoints = 0;
+var points = 0;
+var points1 = 0;
 
 const comments = (komentarze) => { //ilosc komentarzy
         if(typeof komentarze === 'undefined') {
-            return 'komentarze: 0';
+            return parseInt(0);
         }
         else{
-            return 'komentarze: ' + komentarze.length;
+            return parseInt(komentarze.length);
         }
 }
 
@@ -31,7 +31,7 @@ const theNewestPosts = (start,howMany) => { //najnowsze posty
                         wynik += '<p class="autor_posta"><span id="autor_posta">autor: '+json2.by+'</span></p><span class="separator">|</span>';
                         wynik += '<br><p class="wynik_posta"><span id="wynik_posta">wynik: '+json2.score+'</span></p><span class="separator">|</span>';
                         wynik += '<p class="data_posta"><span id="data_posta">2h temu</span></p><span class="separator">|</span>';
-                        wynik += '<p class="ilosc_komment"><span id="ilosc_komment">'+comments(json2.kids)+'</span></p>';
+                        wynik += '<p class="ilosc_komment"><span id="ilosc_komment">komantarzy: '+comments(json2.kids)+'</span></p>';
                         wynik += '<p class="link_posta"><span id="link_posta">';
                             if(typeof json2.url == 'undefined') {
                             wynik += '<a href="#">brak</a>';
@@ -41,15 +41,27 @@ const theNewestPosts = (start,howMany) => { //najnowsze posty
                             }
                         wynik += '</span></p>';
                         document.getElementById('booder').innerHTML += wynik;
-                        articlesPoints(json2.score);
+                        points1 = statisticHowMany(points, json2.score, 'statystyka_1');
+                        // statisticHowMany(comments(json2.kids), 'statystyka_2');
             })
         }
     }) 
 }
 
-const articlesPoints = (points) => { //ilosc punktow
-    howManyLikes += points;
-    document.getElementById('statystyka_1').innerHTML = parseInt(howManyLikes);
+const statisticHowMany = (numm, score, statisticID) => {
+    numm += score;
+    const element = document.getElementById(statisticID);
+    const currentValue = parseInt(element.innerHTML) || 0; // Jeśli parseInt zwraca NaN, zwróć 0
+    element.innerHTML = currentValue + numm;
+    return currentValue + numm;
+}
+
+const resetStatistics = () => {
+    document.getElementById('statystyka_1').innerHTML = "";
+    document.getElementById('statystyka_2').innerHTML = "";
+    document.getElementById('statystyka_3').innerHTML = "";
+    document.getElementById('statystyka_4').innerHTML = "";
+    document.getElementById('statystyka_5').innerHTML = "";
 }
 
 const imageChange = (number) => {
@@ -80,6 +92,7 @@ const hide = (divID) => { //ukrywa div'a
 }
 
 const showMore = () => { //pokaz więcej
+    resetStatistics();
     document.getElementById("booder").innerText = "";
     startArticle=endArticle; 
     endArticle += number; 
