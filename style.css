@@ -14,6 +14,7 @@ body{
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  padding-left: 200px;
 }
 
 .header a {
@@ -39,7 +40,7 @@ body{
 .menu,.in_put{
     margin-top: auto; 
     margin-bottom: 1.5vh; 
-    font-size: 3vh;
+    font-size: 26px;
     padding: 0 2.5vw;
 }
 
@@ -57,6 +58,7 @@ a:visited {
 }
 
 .booder {
+    padding-top: 30px;
     width: 90%; 
     max-width: 1200px; 
     margin: 0 auto;
@@ -82,6 +84,14 @@ a:visited {
     padding: 10px 0;
 }
 
+.statystyki {
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    border: 1px solid gray;
+    margin-top: 30px;
+}
+
 
 .ID_posta, .tytul_posta, .my-image, .link_posta{
     display: inline-block;
@@ -98,8 +108,8 @@ a:visited {
     color: gray;
 }
 
-.showMore{
-    margin-top: 400px;
+#showMore{
+    margin-top: 20px;
 }
 
 .my-image {
@@ -110,7 +120,10 @@ input[type="checkbox"]:checked + .my-image {
     fill:green;
 }
 
-footer {
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background: #000;
     color: white;
     text-align: center;
@@ -118,12 +131,6 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-}
-
-.footer-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .footer-item {
