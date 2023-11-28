@@ -157,3 +157,7 @@ input[type="checkbox"]:checked + .my-image {
     bottom: 0;
     margin-top: 300px;
 }
+
+#buttons {
+    margin-top: 20px;
+}
