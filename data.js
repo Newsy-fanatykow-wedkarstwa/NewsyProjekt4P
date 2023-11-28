@@ -8,10 +8,10 @@ const  na_unix_time = (dataString) => // zwraca int // Zamiana na Unix time (cza
     )
     .getTime()/1000; // data 0 : 01:01:1970
 
-const na_date_format = (unixTime) => // zwraca str // Zamiana na datę "dd:mm:rrrr"  // unixTime w sekundach
-    ("0" + new Date(unixTime*1000).getDate()).slice(-2) +
-    ":" + ("0" + (new Date(unixTime*1000).getMonth() + 1)).slice(-2) +
-    ":" + new Date(unixTime*1000).getFullYear(); 
+// const na_date_format = (unixTime) => // zwraca str // Zamiana na datę "dd:mm:rrrr"  // unixTime w sekundach
+//     ("0" + new Date(unixTime*1000).getDate()).slice(-2) +
+//     ":" + ("0" + (new Date(unixTime*1000).getMonth() + 1)).slice(-2) +
+//     ":" + new Date(unixTime*1000).getFullYear(); 
 
 const na_czas_format = (róznicaCzasUnix) => // zwraca str // Zamiana na datę "mm:hh" 
     // zwraca poprawną wartość jako "mm:hh" jeżeli róznica jest bierzący_czas - czas_posta 
@@ -79,10 +79,9 @@ const hide = (divID) => { //ukrywa div'a
 /// i tyle 
 
 const input_on_html = '<center><div class="inputs">data: <input type="text"   onkeyup="genNewsy()" id="dateNewsy"> (format dd:mm:rrrr)<br><span id="error_format"></span></div></center>';
-const filtr_data = (json) => (outContent, amount) => {
+const filtr_data = (json) => ( amount) => {
     let a = 0;
     console.log(json.lenght);
-    outContent.innerHTML=input_on_html;
     json.forEach(element => {
         if (amount >= 1) {
             const {
@@ -130,15 +129,16 @@ const filtr_data = (json) => (outContent, amount) => {
     outContent.innerHTML+="<br><br><br><br>";
 }
 
-const api_filter = (StrDzień) => async (outContent, amount) => {
+const api_filter = (StrDzień) => async ( amount) => {
     let timeS_od = na_unix_time(StrDzień);
     let timeS_do = timeS_od + (jedenDzień); 
 //    console.log(timeS_od, timeS_do, jedenDzień) //    pierwsze mniejsze 
     let url = "http://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=created_at_i>" + timeS_od + ",created_at_i<" + timeS_do;
-    console.log(url, StrDzień)
+    // console.log(url, StrDzień)
+
     await fetch(url)
         .then((response) => response.json())
-        .then((json) => filtr_data(json.hits)(outContent, amount))
+        .then((json) => filtr_data(json.hits)( amount))
         .catch((error) => {
             console.error(error);
         });
@@ -159,7 +159,7 @@ function genNewsy() {
     if (datePattern.test(inputDate.value)) {
         outError.innerHTML = "";
 
-        api_filter( inputDate.value )(outContent, amount    )
+        api_filter( inputDate.value )( amount    )
         // code         data        | out html  | ilość*out | 
     } else {
         outError.innerHTML = "error, patern is: \"dd:mm:rrrr\" or \"d:m:rrrr\"";
@@ -167,5 +167,5 @@ function genNewsy() {
 }
 
 window.onload = function () {
-document.getElementById("booder").innerHTML = input_on_html;
+
 }

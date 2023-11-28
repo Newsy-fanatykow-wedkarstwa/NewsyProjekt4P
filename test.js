@@ -3,23 +3,7 @@ var endArticle = 3;
 var number = endArticle;
 var articleUrl = 'https://hacker-news.firebaseio.com/v0/newstories.json?';
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    showPosts(startArticle, endArticle, articleUrl);
-});
 
-const checkURL = () => {
-    const link = window.location.href;
-    if(link.includes('strona_glowna')){
-        articleUrl = 'https://hacker-news.firebaseio.com/v0/newstories.json?';
-        console.log('glowna');
-    }
-    else if(link.includes('strona_z_najlepszymi')) {
-        articleUrl = 'https://hacker-news.firebaseio.com/v0/beststories.json?';
-        console.log('najlepsze');
-    }
-}
-
-checkURL();
 
 const comments = (komentarze) => { //ilosc komentarzy
         if(typeof komentarze === 'undefined') {
@@ -29,8 +13,36 @@ const comments = (komentarze) => { //ilosc komentarzy
             return parseInt(komentarze.length);
         }
 }
+const to_html_booder = (json2,a) => {
+    let wynik = '<div class="post" id="div'+(a+1)+'"><p class="ID_posta">ID: <span id="wynik_ID">'+(a+1)+'</span>';
+    wynik += '<p class="tytul_posta">';
+    wynik += '<span id="tytul_posta">tytul: '+json2.title+'</span></p>';
+    wynik += '<img class="triangle0" id="triangle'+(a+1)+'" src="obrazki/white_triangle.png" onclick="imageChange('+(a+1)+')" style="width: 15px;">&emsp;';
+    wynik += '<p class="link_posta"><span id="link_posta">';
+    if(typeof json2.url == 'undefined') {
+    wynik += '<a href="#">brak</a>';
+    }
+    else {
+        wynik += '(<a href="'+json2.url+'">link</a>)';
+    }
+    wynik += '</span></p><br>';
+    wynik += '<button class="btn btn-secondary" id="hide" onclick="hide('+(a+1)+')">hide</button>&emsp;';
+    wynik += '<p class="wynik_posta"><span id="wynik_posta">wynik: '+json2.score+'</span></p>';
+    wynik += '<p class="autor_posta"><span id="autor_posta">autor: '+json2.by+'</span></p>';
+    wynik += '<p class="data_posta"><span id="data_posta">'+timeAgo(Date.now()/1000-json2.time)+'</span></p>';
+    wynik += '<p class="ilosc_komment"><span id="ilosc_komment">komentarzy: '+comments(json2.kids)+'</span></p>';
+    document.getElementById('booder').innerHTML += wynik;
+
+    // statystyki 
+    statisticHowMany(json2.score, 'statystyka_1');
+    statisticHowMany(comments(json2.kids), 'statystyka_2');
+    localChanges('statystyka_3', 'img.triangle1');
+    localChanges('statystyka_4', 'div.hidden');
+    numberInString(json2.title, 'statystyka_5');
+};
 
 const showPosts = (start,howMany,url) => { //najnowsze posty
+    document.getElementById('booder').innerHTML = "";
     fetch(url)
         .then(response => response.json())
         .then (async json => {
@@ -38,30 +50,8 @@ const showPosts = (start,howMany,url) => { //najnowsze posty
                     let x= json[a];
                     await fetch('https://hacker-news.firebaseio.com/v0/item/'+x+'.json?print=pretty')
                         .then(response2 => response2.json())
-                        .then(json2 => {
-                            let wynik = '<div class="post" id="div'+(a+1)+'"><p class="ID_posta">ID: <span id="wynik_ID">'+(a+1)+'</span>';
-                            wynik += '<p class="tytul_posta">';
-                            wynik += '<span id="tytul_posta">tytul: '+json2.title+'</span></p>';
-                            wynik += '<img class="triangle0" id="triangle'+(a+1)+'" src="obrazki/white_triangle.png" onclick="imageChange('+(a+1)+')" style="width: 15px;">&emsp;';
-                            wynik += '<p class="link_posta"><span id="link_posta">';
-                            if(typeof json2.url == 'undefined') {
-                            wynik += '<a href="#">brak</a>';
-                            }
-                            else {
-                                wynik += '(<a href="'+json2.url+'">link</a>)';
-                            }
-                            wynik += '</span></p><br>';
-                            wynik += '<button class="btn btn-secondary" id="hide" onclick="hide('+(a+1)+')">hide</button>&emsp;';
-                            wynik += '<p class="wynik_posta"><span id="wynik_posta">wynik: '+json2.score+'</span></p>';
-                            wynik += '<p class="autor_posta"><span id="autor_posta">autor: '+json2.by+'</span></p>';
-                            wynik += '<p class="data_posta"><span id="data_posta">'+timeAgo(Date.now()/1000-json2.time)+'</span></p>';
-                            wynik += '<p class="ilosc_komment"><span id="ilosc_komment">komentarzy: '+comments(json2.kids)+'</span></p>';
-                            document.getElementById('booder').innerHTML += wynik;
-                            statisticHowMany(json2.score, 'statystyka_1');
-                            statisticHowMany(comments(json2.kids), 'statystyka_2');
-                            localChanges('statystyka_3', 'img.triangle1');
-                            localChanges('statystyka_4', 'div.hidden');
-                            numberInString(json2.title, 'statystyka_5');
+                        .then( json2 => {
+                            to_html_booder(json2,a);
                 })
             }
             document.getElementById('statistics').style.display = 'block';
@@ -177,3 +167,42 @@ const timeAgo = (unixTime) => { // miliardy cyfra / sekundy // róznnica bierzą
         return `${years} ${years === 1 ? "rok" : "lata"} temu`;
     }
 };
+
+document.addEventListener('DOMContentLoaded', (event) => { checkURL(window.location.href); });
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+let blocker_errors = true;
+const a_button = async ()=>{
+    // console.log("click a");
+    if(blocker_errors){
+        blocker_errors = false;
+        let link =  window.location.href;
+        let a =  window.location.href;
+        do {
+            await sleep(200);
+            link =  window.location.href;
+        } while (a==link);
+        checkURL(link);
+        // console.log("click b");
+    }
+    blocker_errors = true;
+}
+
+const checkURL = (link) => {
+    
+
+    if(link.includes('#g')){
+        articleUrl = 'https://hacker-news.firebaseio.com/v0/newstories.json?';
+        console.log('glowna');
+    }
+    else if(link.includes('#n')) {
+        articleUrl = 'https://hacker-news.firebaseio.com/v0/beststories.json?';
+        console.log('najlepsze');
+    } else {
+        articleUrl = 'https://hacker-news.firebaseio.com/v0/newstories.json?';
+        console.log('glowna +');
+    }
+    
+    
+    showPosts(startArticle, endArticle, articleUrl);
+}
+
