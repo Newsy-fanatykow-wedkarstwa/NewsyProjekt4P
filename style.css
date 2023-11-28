@@ -88,24 +88,26 @@ a:visited {
     margin-top: 100px;
     display: flex;
     justify-content: center;
-    border: 1px solid gray;
+    border-top: 1px solid gray;
     margin-top: 30px;
+    padding-top: 30px;
+    margin-bottom: 10px;
 }
 
 
 .ID_posta, .tytul_posta, .my-image, .link_posta{
     display: inline-block;
-    padding-right: 2vw;
+    padding-right: 4vw;
 }
 
-.wynik_posta, .autor_posta, .data_posta, .ilosc_komment, .hide{
+.wynik_posta, .autor_posta, .data_posta, .ilosc_komment{
     display: inline-block;
     color: gray;
-    padding-right: 2vw;
+    padding-right: 4vw;
 }
 
-.link_posta {
-    color: gray;
+.wynik_posta{
+    padding-left: 4vw;
 }
 
 #showMore{
