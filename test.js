@@ -6,13 +6,15 @@ var articleUrl = 'https://hacker-news.firebaseio.com/v0/newstories.json?';
 
 
 const comments = (komentarze) => { //ilosc komentarzy
-    if (/^[0-9]+$/.test(komentarze)) return komentarze;
+    
+    if (/^[0-9]+$/.test(komentarze) && typeof komentarze == 'number') return komentarze;
 
     if (typeof komentarze === 'undefined') return parseInt(0);
     else {
-        console.log("konen l", komentarze.length);
+        // console.log("konen l", komentarze.length);
         return parseInt(komentarze.length);
     }
+
 }
 
 const to_html_booder = (json2, a) => {
@@ -192,9 +194,15 @@ const a_button = async () => {
 }
 
 const checkURL = (link) => {
+
     document.getElementById("amountNewsyAccept").style.display = "inline-block";
     document.getElementById("showMore").style.display = "inline-block";
     document.getElementById('booder').innerHTML = "";
+
+    document.getElementById('statystyka_1').innerHTML = "";
+    document.getElementById('statystyka_2').innerHTML = "";
+    document.getElementById('statystyka_5').innerHTML = "";
+
         document.getElementById('statistics').style.display = 'none';
     if(startArticle>0) {
         startArticle=0;
