@@ -14,6 +14,7 @@ const comments = (komentarze) => { //ilosc komentarzy
         return parseInt(komentarze.length);
     }
 }
+
 const to_html_booder = (json2, a) => {
     // console.log(typeof json2, json2);
     let wynik = '<div class="post" id="div' + (a + 1) + '"><p class="ID_posta">ID: <span id="wynik_ID">' + (a + 1) + '</span>';
@@ -171,6 +172,7 @@ const timeAgo = (unixTime) => { // miliardy cyfra / sekundy // róznnica bierzą
 document.addEventListener('DOMContentLoaded', (event) => {
     checkURL(window.location.href);
 });
+
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 let blocker_errors = true;
 const a_button = async () => {
@@ -192,7 +194,12 @@ const a_button = async () => {
 const checkURL = (link) => {
     document.getElementById("amountNewsyAccept").style.display = "inline-block";
     document.getElementById("showMore").style.display = "inline-block";
-
+    document.getElementById('booder').innerHTML = "";
+        document.getElementById('statistics').style.display = 'none';
+    if(startArticle>0) {
+        startArticle=0;
+        endArticle=number;
+    }
     if (link.includes('#g')) {
         articleUrl = 'https://hacker-news.firebaseio.com/v0/newstories.json?';
         console.log('glowna');
@@ -208,7 +215,7 @@ const checkURL = (link) => {
         document.getElementById("amountNewsyAccept").style.display = "none";
         document.getElementById("showMore").style.display = "none";
         document.getElementById("statistics").style.display = "none";
-        document.getElementById("booder").innerHTML = input_on_html;
+        document.getElementById("buttons").innerHTML = input_on_html;
     } else if (link.includes('#s')) {
         articleUrl = 'yrzer_szukanie';
         console.log('szukanie');
@@ -216,7 +223,7 @@ const checkURL = (link) => {
         document.getElementById("amountNewsyAccept").style.display = "none";
         document.getElementById("showMore").style.display = "none";
         document.getElementById("statistics").style.display = "none";
-        document.getElementById("booder").innerHTML = input_on_html;
+        document.getElementById("buttons").innerHTML = input_on_html;
     } else {
         articleUrl = 'https://hacker-news.firebaseio.com/v0/newstories.json?';
         console.log('glowna +');
@@ -295,6 +302,7 @@ const api_filter = (StrDzień, r) => async (amount) => {
 }
 
 async function genNewsy(r) {
+    document.getElementById('booder').innerHTML = "";
     const inputAmount = document.getElementById("amountNewsy");
     const inputDate = document.getElementById("dateNewsy");
     const outError = document.getElementById("error_format");
@@ -321,6 +329,5 @@ async function genNewsy(r) {
             await api_filter(inputDate.value)(amount)
         }
         blocker_errors = true;
-
     }
 }
