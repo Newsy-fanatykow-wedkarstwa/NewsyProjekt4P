@@ -6,15 +6,13 @@ var articleUrl = 'https://hacker-news.firebaseio.com/v0/newstories.json?';
 
 
 const comments = (komentarze) => { //ilosc komentarzy
-    
-    if (/^[0-9]+$/.test(komentarze) && typeof komentarze == 'number') return komentarze;
+    if (/^[0-9]+$/.test(komentarze)) return komentarze;
 
     if (typeof komentarze === 'undefined') return parseInt(0);
     else {
-        // console.log("konen l", komentarze.length);
+        console.log("konen l", komentarze.length);
         return parseInt(komentarze.length);
     }
-
 }
 
 const to_html_booder = (json2, a) => {
@@ -59,7 +57,6 @@ const showPosts = (start, howMany, url) => { //najnowsze posty
                     })
             }
             document.getElementById('statistics').style.display = 'block';
-
         })
 }
 
@@ -194,29 +191,28 @@ const a_button = async () => {
 }
 
 const checkURL = (link) => {
-
     document.getElementById("amountNewsyAccept").style.display = "inline-block";
     document.getElementById("showMore").style.display = "inline-block";
     document.getElementById('booder').innerHTML = "";
-
-    document.getElementById('statystyka_1').innerHTML = "";
-    document.getElementById('statystyka_2').innerHTML = "";
-    document.getElementById('statystyka_5').innerHTML = "";
-
         document.getElementById('statistics').style.display = 'none';
     if(startArticle>0) {
         startArticle=0;
         endArticle=number;
     }
     if (link.includes('#g')) {
+        resetStatistics();
+        document.getElementById('buttons').style.display = 'none';
         articleUrl = 'https://hacker-news.firebaseio.com/v0/newstories.json?';
         console.log('glowna');
         showPosts(startArticle, endArticle, articleUrl);
     } else if (link.includes('#n')) {
+        resetStatistics();
+        document.getElementById('buttons').style.display = 'none';
         articleUrl = 'https://hacker-news.firebaseio.com/v0/beststories.json?';
         console.log('najlepsze');
         showPosts(startArticle, endArticle, articleUrl);
     } else if (link.includes('#d')) {
+        document.getElementById('buttons').style.display = 'block';
         articleUrl = 'yrzer_data';
         console.log('data');
         input_on_html = '<center><div class="inputs">data: <input type="text" onkeyup="genNewsy(true)" id="dateNewsy"> (format dd:mm:rrrr)<br><span id="error_format"></span></div></center>';
@@ -225,6 +221,7 @@ const checkURL = (link) => {
         document.getElementById("statistics").style.display = "none";
         document.getElementById("buttons").innerHTML = input_on_html;
     } else if (link.includes('#s')) {
+        document.getElementById('buttons').style.display = 'block';
         articleUrl = 'yrzer_szukanie';
         console.log('szukanie');
         input_on_html = '<center><div class="jnputs">text: <input type="text" id="dateNewsy"> <input type="button" value="porównaj ciąg znaków" onclick="genNewsy(false)"></div></center>';
@@ -237,9 +234,6 @@ const checkURL = (link) => {
         console.log('glowna +');
         showPosts(startArticle, endArticle, articleUrl);
     }
-
-
-
 }
 
 // yrzer w down
