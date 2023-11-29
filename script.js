@@ -1,11 +1,11 @@
 var startArticle = 0;
-var endArticle = 3;
+var endArticle = 30;
 var number = endArticle;
 var articleUrl = 'https://hacker-news.firebaseio.com/v0/newstories.json?';
 
 
 
-const comments = (komentarze) => { //ilosc komentarzy
+const comments = (komentarze) => { //ilosc komentarzy 
     if (/^[0-9]+$/.test(komentarze) && typeof komentarze == 'number') return komentarze;
 
     if (typeof komentarze === 'undefined') return parseInt(0);
@@ -15,7 +15,7 @@ const comments = (komentarze) => { //ilosc komentarzy
     }
 }
 
-const to_html_booder = (json2, a) => {
+const to_html_booder = (json2, a) => { //tworzenie html do showPosts 
     // console.log(typeof json2, json2);'
     let wynik = '<div class="post" id="div' + (a + 1) + '"><p class="ID_posta">ID: <span id="wynik_ID">' + (a + 1) + '</span>';
     wynik += '<p class="tytul_posta">';
@@ -43,7 +43,7 @@ const to_html_booder = (json2, a) => {
     numberInString(json2.title, 'statystyka_5');
 };
 
-const showPosts = (start, howMany, url) => { //najnowsze posty
+const showPosts = (start, howMany, url) => { //do wyswietlania postow
     document.getElementById('booder').innerHTML = "";
     fetch(url)
         .then(response => response.json())
@@ -190,14 +190,14 @@ const a_button = async () => {
     blocker_errors = true;
 }
 
-const checkURL = (link) => {
+const checkURL = (link) => { //sprawdz jakie url
     document.getElementById("amountNewsyAccept").style.display = "inline-block";
     document.getElementById("showMore").style.display = "inline-block";
     document.getElementById('booder').innerHTML = "";
-        document.getElementById('statistics').style.display = 'none';
-    if(startArticle>0) {
-        startArticle=0;
-        endArticle=number;
+    document.getElementById('statistics').style.display = 'none';
+    if (startArticle > 0) {
+        startArticle = 0;
+        endArticle = number;
     }
     if (link.includes('#g')) {
         resetStatistics();
@@ -255,47 +255,48 @@ const na_date_format = (unixTime) => // zwraca str // Zamiana na datę "dd:mm:rr
 // kod
 const filtr_data = (json) => {
     let a = 0;
-if (!document.getElementById("czekaj")) {
-    var czekajDiv = document.createElement('div');
-    czekajDiv.setAttribute("id", "czekaj");
-    document.getElementById("buttons").appendChild(czekajDiv);
-}
-document.getElementById("czekaj").innerHTML = "<center>czekaj. szukanie...<br>ilość wyświetlanych:" + json.length + "</center>";
-        json.forEach(element => {
-            const {
-                author,
-                created_at_i,
-                num_comments,
-                points,
-                story_id,
-                title,
-                url
-            } = element;
+    if (!document.getElementById("czekaj")) {
+        var czekajDiv = document.createElement('div');
+        czekajDiv.setAttribute("id", "czekaj");
+        document.getElementById("buttons").appendChild(czekajDiv);
+    }
+    document.getElementById("czekaj").innerHTML = "<center>czekaj. szukanie...<br>ilość wyświetlanych:" + json.length + "</center>";
+    json.forEach(element => {
 
-            var json2 = new Object();
-            json2.title = title;
-            json2.url = url;
-            json2.score = points;
-            json2.by = author;
-            json2.time = created_at_i;
-            json2.kids = num_comments;
-            // console.log(typeof json2, json2);
-            to_html_booder(json2, a);
-            a++;
+        const {
+            author,
+            created_at_i,
+            num_comments,
+            points,
+            story_id,
+            title,
+            url
+        } = element;
+
+        var json2 = new Object();
+        json2.title = title;
+        json2.url = url;
+        json2.score = points;
+        json2.by = author;
+        json2.time = created_at_i;
+        json2.kids = num_comments;
+        // console.log(typeof json2, json2);
+        to_html_booder(json2, a);
+        a++;
 
     });
     // outContent.innerHTML+="<br><br><br><br>";
 }
 
-const api_filter = (StrDzień, r) => async (amount,typeSelect) => {
-    let url="";
+const api_filter = (StrDzień, r) => async (amount, typeSelect) => {
+    let url = "";
     if (r) {
         let timeS_od = na_unix_time(StrDzień);
         let timeS_do = timeS_od + (jedenDzień);
-        url = "http://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=created_at_i>" + timeS_od + ",created_at_i<" + timeS_do+"&hitsPerPage="+amount;
+        url = "http://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=created_at_i>" + timeS_od + ",created_at_i<" + timeS_do + "&hitsPerPage=" + amount;
     } else {
-        url = "https://hn.algolia.com/api/v1/search?query=" + StrDzień + "&tags="+typeSelect+"&hitsPerPage="+amount;
-        console.log(url,typeSelect);
+        url = "https://hn.algolia.com/api/v1/search?query=" + StrDzień + "&tags=" + typeSelect + "&hitsPerPage=" + amount;
+        console.log(url, typeSelect);
     }
     await fetch(url)
         .then((response) => response.json())
@@ -321,7 +322,7 @@ async function genNewsy(r) {
             if (blocker_errors) {
                 blocker_errors = false;
                 outError.innerHTML = "";
-                await api_filter(inputDate.value)(amount,-1)
+                await api_filter(inputDate.value)(amount, -1)
             }
             blocker_errors = true;
         } else {
@@ -331,7 +332,7 @@ async function genNewsy(r) {
         const typeSelect = document.getElementById("typeSelect").value;
         if (blocker_errors) {
             blocker_errors = false;
-            await api_filter(inputDate.value)(amount,typeSelect)
+            await api_filter(inputDate.value)(amount, typeSelect)
         }
         blocker_errors = true;
     }
