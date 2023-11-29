@@ -6,7 +6,7 @@ var articleUrl = 'https://hacker-news.firebaseio.com/v0/newstories.json?';
 
 
 const comments = (komentarze) => { //ilosc komentarzy
-    if (/^[0-9]+$/.test(komentarze)) return komentarze;
+    if (/^[0-9]+$/.test(komentarze) && typeof komentarze == 'number') return komentarze;
 
     if (typeof komentarze === 'undefined') return parseInt(0);
     else {
