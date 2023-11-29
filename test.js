@@ -16,7 +16,7 @@ const comments = (komentarze) => { //ilosc komentarzy
 }
 
 const to_html_booder = (json2, a) => {
-    // console.log(typeof json2, json2);
+    // console.log(typeof json2, json2);'
     let wynik = '<div class="post" id="div' + (a + 1) + '"><p class="ID_posta">ID: <span id="wynik_ID">' + (a + 1) + '</span>';
     wynik += '<p class="tytul_posta">';
     wynik += '<span id="tytul_posta">tytul: ' + json2.title + '</span></p>';
@@ -224,7 +224,7 @@ const checkURL = (link) => {
         document.getElementById('buttons').style.display = 'block';
         articleUrl = 'yrzer_szukanie';
         console.log('szukanie');
-        input_on_html = '<center><div class="jnputs">text: <input type="text" id="dateNewsy"> <input type="button" value="porównaj ciąg znaków" onclick="genNewsy(false)"></div></center>';
+        input_on_html = `<center><div class="jnputs">text: <input type="text" id="dateNewsy"><select id="typeSelect"><option>story</option><option>comment</option><option>poll</option><option>pollopt</option></select><input type="button" value="porównaj ciąg znaków" onclick="genNewsy(false)"></div></center>`;
         document.getElementById("amountNewsyAccept").style.display = "none";
         document.getElementById("showMore").style.display = "none";
         document.getElementById("statistics").style.display = "none";
@@ -253,11 +253,15 @@ const na_date_format = (unixTime) => // zwraca str // Zamiana na datę "dd:mm:rr
     ":" + new Date(unixTime * 1000).getFullYear();
 
 // kod
-const filtr_data = (json) => (amount) => {
+const filtr_data = (json) => {
     let a = 0;
-    // console.log(json.lenght);
-    json.forEach(element => {
-        if (amount >= 1) {
+if (!document.getElementById("czekaj")) {
+    var czekajDiv = document.createElement('div');
+    czekajDiv.setAttribute("id", "czekaj");
+    document.getElementById("buttons").appendChild(czekajDiv);
+}
+document.getElementById("czekaj").innerHTML = "<center>czekaj. szukanie...<br>ilość wyświetlanych:" + json.length + "</center>";
+        json.forEach(element => {
             const {
                 author,
                 created_at_i,
@@ -277,27 +281,25 @@ const filtr_data = (json) => (amount) => {
             json2.kids = num_comments;
             // console.log(typeof json2, json2);
             to_html_booder(json2, a);
-
-            amount--;
             a++;
-        }
 
     });
     // outContent.innerHTML+="<br><br><br><br>";
 }
 
-const api_filter = (StrDzień, r) => async (amount) => {
+const api_filter = (StrDzień, r) => async (amount,typeSelect) => {
     let url="";
     if (r) {
         let timeS_od = na_unix_time(StrDzień);
         let timeS_do = timeS_od + (jedenDzień);
-        url = "http://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=created_at_i>" + timeS_od + ",created_at_i<" + timeS_do;
+        url = "http://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=created_at_i>" + timeS_od + ",created_at_i<" + timeS_do+"&hitsPerPage="+amount;
     } else {
-        url = "https://hn.algolia.com/api/v1/search?query=" + StrDzień + "&tags=(story,job)";
+        url = "https://hn.algolia.com/api/v1/search?query=" + StrDzień + "&tags="+typeSelect+"&hitsPerPage="+amount;
+        console.log(url,typeSelect);
     }
     await fetch(url)
         .then((response) => response.json())
-        .then((json) => filtr_data(json.hits)(amount))
+        .then((json) => filtr_data(json.hits))
         .catch((error) => {
             console.error(error);
         });
@@ -311,7 +313,7 @@ async function genNewsy(r) {
     const datePattern = /^([1-9]|[1-2]\d|3[0-1]):(0[1-9]|1[0-2]):\d{4}$/;
     const zeroPattern = /^0+$/;
 
-    let amount = 5;
+    let amount = 30;
     if (inputAmount.value != "" && !zeroPattern.test(inputAmount.value)) amount = inputAmount.value;
 
     if (r) {
@@ -319,16 +321,17 @@ async function genNewsy(r) {
             if (blocker_errors) {
                 blocker_errors = false;
                 outError.innerHTML = "";
-                await api_filter(inputDate.value)(amount)
+                await api_filter(inputDate.value)(amount,-1)
             }
             blocker_errors = true;
         } else {
             outError.innerHTML = "error, patern is: \"dd:mm:rrrr\" or \"d:m:rrrr\"";
         }
     } else {
+        const typeSelect = document.getElementById("typeSelect").value;
         if (blocker_errors) {
             blocker_errors = false;
-            await api_filter(inputDate.value)(amount)
+            await api_filter(inputDate.value)(amount,typeSelect)
         }
         blocker_errors = true;
     }
