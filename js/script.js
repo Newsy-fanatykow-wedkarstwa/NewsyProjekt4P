@@ -127,7 +127,7 @@ const howManyNews = async () => { //ile newsow ma sie pokazywac
     await fetch('https://hacker-news.firebaseio.com/v0/newstories.json?')
         .then(response => response.json())
         .then(async json => {
-            if (amount < 1 || amount > json.length) {
+            if (amount < 1 || (amount > json.length) || amount==null) {
                 alert('Wybierz ilosc newsow od 1 do ' + json.length);
                 good = 0;
                 document.getElementById("booder").innerText = "";
@@ -269,12 +269,14 @@ const filtr_data = (json) => {
             num_comments,
             points,
             story_id,
+            comment_text,
             title,
             url
         } = element;
-
+        
         var json2 = new Object();
-        json2.title = title;
+        if((title != null) || (title === 'undefined')) json2.title = title;
+        else  json2.title = comment_text;
         json2.url = url;
         json2.score = points;
         json2.by = author;
